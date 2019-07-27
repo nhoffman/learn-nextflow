@@ -1,15 +1,20 @@
 #!/usr/bin/env nextflow
 
-
 process md5sum {
-    container "ubuntu:18.04"
-    cpus 1
-    memory "2 GB"
+
+    publishDir "local_outputs"
 
     input:
-	file infile from params.infile
+	val outfile from "${file(params.infile).getName()}.md5"
+	file infile name params.infile from params.infile
+
+    output:
+	file "${outfile}" into md5
 
     """
-    md5sum $infile
+    md5sum $infile > $outfile
     """
+
 }
+
+md5.subscribe { print "$it" }
