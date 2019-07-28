@@ -1,18 +1,21 @@
 #!/usr/bin/env nextflow
 
+infile = file(params.infile)
+outfile = infile.getSimpleName() + '.md5'
+
 process md5sum {
 
-    publishDir "local_outputs"
+    publishDir "$params.outdir/"
 
     input:
-	val outfile from "${file(params.infile).getName()}.md5"
-	file infile name params.infile from params.infile
+	file input from infile
+    	val output from outfile
 
     output:
-	file "${outfile}" into md5
+	file output into md5
 
     """
-    md5sum $infile > $outfile
+    md5sum $input > $output
     """
 
 }

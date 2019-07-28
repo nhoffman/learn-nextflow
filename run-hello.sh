@@ -10,4 +10,5 @@ nextflow \
     run \
     hello.nf \
     --infile "$infile" \
+    --outdir local_outputs \
     -resume
